@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Ukubona · GAP Research Programme</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{--bg:#080c0d;--surface:#0f1517;--surface2:#141c1f;--border:#1a2427;--accent:#00c9a7;--accent2:#ff6b35;--accent3:#a78bfa;--gold:#d4a843;--text:#dde8eb;--text-dim:#6a8a93;--text-muted:#2e4249}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'IBM Plex Sans',sans-serif;font-weight:300;line-height:1.75;overflow-x:hidden}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:16px 48px;display:flex;align-items:center;justify-content:space-between;background:rgba(8,12,13,0.88);backdrop-filter:blur(14px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--accent);letter-spacing:.05em}
+.nav-links{display:flex;gap:28px;list-style:none}
+.nav-links a{color:var(--text-dim);text-decoration:none;font-family:'IBM Plex Mono',monospace;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;transition:color .2s}
+.nav-links a:hover{color:var(--accent)}
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:120px 80px 80px;position:relative;overflow:hidden}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 15% 55%,rgba(0,201,167,.07) 0%,transparent 65%),radial-gradient(ellipse 50% 70% at 85% 15%,rgba(167,139,250,.06) 0%,transparent 55%),radial-gradient(ellipse 35% 35% at 65% 85%,rgba(255,107,53,.05) 0%,transparent 50%)}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(0,201,167,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,201,167,.025) 1px,transparent 1px);background-size:60px 60px}
+.hero-inner{position:relative;z-index:1}
+.eyebrow{font-family:'IBM Plex Mono',monospace;font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin-bottom:24px;opacity:0;animation:fadeUp .8s ease .2s forwards}
+h1{font-family:'Playfair Display',serif;font-size:clamp(3rem,7vw,6.5rem);font-weight:900;line-height:1.05;letter-spacing:-.02em;max-width:900px;opacity:0;animation:fadeUp .9s ease .35s forwards}
+h1 em{font-style:italic;color:var(--accent)}
+h1 .dim{color:var(--text-dim);font-weight:400}
+.hero-sub{margin-top:32px;max-width:600px;font-size:1rem;color:var(--text-dim);opacity:0;animation:fadeUp .9s ease .5s forwards}
+.tags{margin-top:40px;display:flex;flex-wrap:wrap;gap:12px;opacity:0;animation:fadeUp .9s ease .65s forwards}
+.tag{padding:5px 14px;border:1px solid var(--border);border-radius:2px;font-family:'IBM Plex Mono',monospace;font-size:.65rem;letter-spacing:.08em;color:var(--text-dim);text-transform:uppercase}
+.tag.a{border-color:var(--accent);color:var(--accent)}
+.tag.b{border-color:var(--accent3);color:var(--accent3)}
+.tag.c{border-color:var(--accent2);color:var(--accent2)}
+/* SECTIONS */
+section{padding:100px 80px}
+section.alt{background:var(--surface)}
+.slabel{font-family:'IBM Plex Mono',monospace;font-size:.65rem;letter-spacing:.25em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
+h2{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:700;margin-bottom:48px;max-width:700px}
+/* PIPELINE */
+.pipeline{display:grid;grid-template-columns:repeat(3,1fr);position:relative}
+.pipeline::before{content:'';position:absolute;top:48px;left:calc(16.66% + 24px);right:calc(16.66% + 24px);height:1px;background:linear-gradient(90deg,var(--accent),var(--accent3),var(--accent2));opacity:.35}
+.pstep{padding:32px;border:1px solid var(--border);background:var(--surface2);transition:border-color .3s,transform .3s;position:relative}
+.pstep:not(:last-child){border-right:none}
+.pstep:hover{border-color:var(--accent);transform:translateY(-4px);z-index:1}
+.pnum{font-family:'Playfair Display',serif;font-size:3.5rem;font-weight:900;color:var(--text-muted);line-height:1;margin-bottom:18px}
+.ptitle{font-size:.95rem;font-weight:600;margin-bottom:8px}
+.pdesc{font-size:.83rem;color:var(--text-dim)}
+/* RUNS */
+.runs{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:16px}
+.rcard{padding:40px 32px;border:1px solid var(--border);position:relative;overflow:hidden;transition:transform .3s,border-color .3s}
+.rcard::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.rcard.r1::before{background:var(--accent)}
+.rcard.r2::before{background:var(--accent3)}
+.rcard.r3::before{background:var(--accent2)}
+.rcard:hover{transform:translateY(-6px)}
+.rcard.r1:hover{border-color:var(--accent)}
+.rcard.r2:hover{border-color:var(--accent3)}
+.rcard.r3:hover{border-color:var(--accent2)}
+.rlabel{font-family:'IBM Plex Mono',monospace;font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:14px}
+.rcard.r1 .rlabel{color:var(--accent)}
+.rcard.r2 .rlabel{color:var(--accent3)}
+.rcard.r3 .rlabel{color:var(--accent2)}
+.rtitle{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;margin-bottom:14px;line-height:1.2}
+.rdesc{font-size:.85rem;color:var(--text-dim);margin-bottom:22px}
+.rbadge{display:inline-block;padding:4px 12px;font-family:'IBM Plex Mono',monospace;font-size:.62rem;letter-spacing:.07em;text-transform:uppercase;border-radius:2px}
+.rcard.r1 .rbadge{background:rgba(0,201,167,.1);color:var(--accent)}
+.rcard.r2 .rbadge{background:rgba(167,139,250,.1);color:var(--accent3)}
+.rcard.r3 .rbadge{background:rgba(255,107,53,.12);color:var(--accent2)}
+/* GAP */
+.gap-inner{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.gap-desc{font-size:.9rem;color:var(--text-dim);margin-bottom:18px}
+.gap-quote{border-left:3px solid var(--gold);padding-left:20px;margin:28px 0;font-family:'Playfair Display',serif;font-size:1.1rem;font-style:italic;color:var(--gold);line-height:1.5}
+.flow{display:flex;flex-direction:column}
+.fnode{padding:18px 22px;border:1px solid var(--border);background:var(--surface2);transition:border-color .3s}
+.fnode:hover{border-color:var(--gold)}
+.fnode.out{border-color:var(--accent);background:rgba(0,201,167,.04)}
+.fnode-lbl{font-family:'IBM Plex Mono',monospace;font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:5px}
+.fnode.out .fnode-lbl{color:var(--accent)}
+.fnode-txt{font-size:.83rem;color:var(--text-dim)}
+.fconn{width:1px;height:20px;background:linear-gradient(var(--gold),var(--accent));margin-left:28px;opacity:.45}
+/* SIGNALS */
+.sgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:40px}
+.scard{padding:28px;border:1px solid var(--border);background:var(--surface2);transition:transform .3s,border-color .3s}
+.scard:hover{transform:translateY(-4px);border-color:var(--accent2)}
+.sicon{font-size:1.6rem;margin-bottom:14px;display:block}
+.stitle{font-weight:600;font-size:.9rem;margin-bottom:8px}
+.sdesc{font-size:.8rem;color:var(--text-dim)}
+/* GRANTS TABLE */
+.gtable{width:100%;border-collapse:collapse;margin-top:40px;font-size:.86rem}
+.gtable th{text-align:left;padding:12px 18px;border-bottom:2px solid var(--border);font-family:'IBM Plex Mono',monospace;font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;color:var(--text-dim);font-weight:400}
+.gtable td{padding:16px 18px;border-bottom:1px solid var(--border);color:var(--text-dim);vertical-align:top}
+.gtable tr:hover td{background:rgba(255,255,255,.015)}
+.pbadge{display:inline-block;padding:3px 10px;border-radius:2px;font-family:'IBM Plex Mono',monospace;font-size:.6rem;font-weight:500;letter-spacing:.05em}
+.p1{background:rgba(0,201,167,.12);color:var(--accent)}
+.p2{background:rgba(167,139,250,.12);color:var(--accent3)}
+.p3{background:rgba(255,107,53,.1);color:var(--accent2)}
+.gname{color:var(--text);font-weight:500}
+.dl{font-family:'IBM Plex Mono',monospace;font-size:.78rem}
+.urg{color:var(--accent2)}
+.gnote{margin-top:20px;padding:18px 22px;border:1px solid var(--border);background:rgba(212,168,67,.04);border-left:3px solid var(--gold)}
+.gnote-lbl{font-family:'IBM Plex Mono',monospace;font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gold)}
+.gnote-txt{margin-top:7px;font-size:.83rem;color:var(--text-dim)}
+/* AI */
+.aigrid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:40px}
+.aicard{padding:26px 22px;border:1px solid var(--border);background:var(--surface2);position:relative;overflow:hidden;transition:transform .3s,border-color .3s}
+.aicard:hover{transform:translateY(-4px)}
+.aicard::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px}
+.aicard.g::after{background:linear-gradient(90deg,#4285f4,#34a853)}
+.aicard.o::after{background:#10a37f}
+.aicard.a::after{background:var(--accent)}
+.aicard.x::after{background:linear-gradient(90deg,#fff,#888)}
+.aicard:hover.g{border-color:#4285f4}
+.aicard:hover.o{border-color:#10a37f}
+.aicard:hover.a{border-color:var(--accent)}
+.aicard:hover.x{border-color:#888}
+.ainame{font-family:'IBM Plex Mono',monospace;font-size:.68rem;letter-spacing:.15em;text-transform:uppercase;margin-bottom:10px}
+.aicard.g .ainame{color:#4285f4}
+.aicard.o .ainame{color:#10a37f}
+.aicard.a .ainame{color:var(--accent)}
+.aicard.x .ainame{color:#aaa}
+.aicontrib{font-size:.8rem;color:var(--text-dim);line-height:1.6}
+.aiinsight{margin-top:12px;padding-top:12px;border-top:1px solid var(--border);font-size:.75rem;color:var(--text-dim);font-style:italic}
+/* PENTAD */
+.pentad{display:flex;flex-wrap:wrap;gap:16px;margin-top:40px;justify-content:center;align-items:center}
+.pnode{padding:22px 28px;border:1px solid var(--border);text-align:center;background:var(--surface2);min-width:170px;transition:transform .3s,border-color .3s}
+.pnode:hover{transform:translateY(-4px);border-color:var(--accent3)}
+.pnode.center{border:2px solid var(--accent3);background:rgba(167,139,250,.06);min-width:200px}
+.pnode-lbl{font-family:'IBM Plex Mono',monospace;font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;color:var(--accent3);margin-bottom:7px}
+.pnode-name{font-weight:600;font-size:.9rem}
+.pnode.center .pnode-name{font-family:'Playfair Display',serif;font-size:1.15rem;color:var(--accent3)}
+.pnode-role{font-size:.75rem;color:var(--text-dim);margin-top:3px}
+.pentad-note{margin-top:28px;padding:18px 22px;border:1px solid var(--border);max-width:680px}
+/* STEPS */
+.slist{margin-top:40px;display:flex;flex-direction:column}
+.sitem{display:grid;grid-template-columns:90px 1fr;gap:28px;padding:24px 0;border-bottom:1px solid var(--border);align-items:start;transition:background .2s}
+.sitem:hover{background:rgba(0,201,167,.02)}
+.smeta{text-align:right}
+.swho{font-family:'IBM Plex Mono',monospace;font-size:.6rem;letter-spacing:.09em;text-transform:uppercase;padding:3px 8px;border-radius:2px;display:inline-block;margin-bottom:5px}
+.wu{background:rgba(0,201,167,.1);color:var(--accent)}
+.wa{background:rgba(167,139,250,.1);color:var(--accent3)}
+.wr{background:rgba(255,107,53,.1);color:var(--accent2)}
+.stext{font-size:.87rem;color:var(--text-dim)}
+.stext strong{color:var(--text);font-weight:500}
+/* LINKS */
+.llinks{display:flex;flex-direction:column;gap:14px;margin-top:32px;max-width:680px}
+.llink{display:flex;justify-content:space-between;align-items:center;padding:18px 22px;border:1px solid var(--border);background:var(--surface2);text-decoration:none;color:var(--text);transition:border-color .3s}
+.llink:hover{border-color:var(--accent)}
+.llabel{font-family:'IBM Plex Mono',monospace;font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);margin-bottom:5px}
+.ltitle{font-size:.88rem}
+.lsub{font-size:.75rem;color:var(--text-dim);margin-top:3px}
+.larrow{color:var(--accent);font-family:'IBM Plex Mono',monospace;font-size:.8rem}
+/* QUOTE */
+.qblock{padding:80px;text-align:center;background:var(--surface);position:relative;overflow:hidden}
+.qblock::before{content:'"';position:absolute;top:-30px;left:30px;font-family:'Playfair Display',serif;font-size:16rem;color:rgba(0,201,167,.04);line-height:1;pointer-events:none}
+.qtext{font-family:'Playfair Display',serif;font-size:clamp(1.2rem,2.5vw,1.85rem);font-style:italic;max-width:820px;margin:0 auto;color:var(--text);line-height:1.55;position:relative;z-index:1}
+.qsrc{margin-top:22px;font-family:'IBM Plex Mono',monospace;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent)}
+/* FOOTER */
+footer{padding:56px 80px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.flogo{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--accent)}
+.fnote{font-size:.75rem;color:var(--text-muted);margin-top:6px}
+.fright{display:flex;flex-direction:column;gap:7px;align-items:flex-end}
+.fright a{font-family:'IBM Plex Mono',monospace;font-size:.68rem;color:var(--text-dim);text-decoration:none;letter-spacing:.05em;transition:color .2s}
+.fright a:hover{color:var(--accent)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:900px){
+  nav{padding:14px 20px}.nav-links{gap:16px}
+  .hero,.qblock{padding:100px 24px 60px}
+  section{padding:70px 24px}
+  .pipeline,.runs,.sgrid,.aigrid{grid-template-columns:1fr}
+  .gap-inner{grid-template-columns:1fr;gap:40px}
+  .pipeline::before{display:none}
+  .pstep:not(:last-child){border-right:1px solid var(--border);border-bottom:none}
+  footer{flex-direction:column;gap:24px;padding:40px 24px}
+  .fright{align-items:flex-start}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Ukubona</div>
+  <ul class="nav-links">
+    <li><a href="#pipeline">Pipeline</a></li>
+    <li><a href="#gap">GAP</a></li>
+    <li><a href="#signal">Signal</a></li>
+    <li><a href="#grants">Grants</a></li>
+    <li><a href="#pentad">Pentad</a></li>
+    <li><a href="#steps">Steps</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-inner">
+    <div class="eyebrow">Grey-Aware Policy · Uganda · 2026</div>
+    <h1><em>GAP</em><br><span class="dim">Research Programme</span></h1>
+    <p class="hero-sub">A high-throughput, AI-augmented systematic review and meta-analysis engine
+    treating grey literature as first-class evidence — built for national health planning in Uganda.</p>
+    <div class="tags">
+      <span class="tag a">CKD Systematic Review</span>
+      <span class="tag b">HIV Systematic Review</span>
+      <span class="tag c">Composite Signal Detection</span>
+      <span class="tag">PRISMA · RAG · HITL</span>
+      <span class="tag">NPA Uganda</span>
+      <span class="tag">UCU · JHU</span>
+    </div>
+  </div>
+</section>
+
+<!-- PIPELINE -->
+<section class="alt" id="pipeline">
+  <div class="slabel">Architecture</div>
+  <h2>The GAP Evidence Engine</h2>
+  <div class="pipeline">
+    <div class="pstep">
+      <div class="pnum">01</div>
+      <div class="ptitle">Ingest</div>
+      <div class="pdesc">Peer-reviewed literature + grey data (MoH reports, NPA briefs, district surveillance) ingested as co-equal evidence sources via RAG pipeline. Grey is not supplementary — it is primary.</div>
+    </div>
+    <div class="pstep">
+      <div class="pnum">02</div>
+      <div class="ptitle">Extract · Validate</div>
+      <div class="pdesc">AI extracts structured clinical parameters. HITL layer — UCU students + JHU faculty — verifies every data point before inclusion. No unvalidated entry into the meta-analysis pool.</div>
+    </div>
+    <div class="pstep">
+      <div class="pnum">03</div>
+      <div class="ptitle">Synthesise · Signal</div>
+      <div class="pdesc">Random-effects meta-analysis. Subgroup by source (peer-reviewed vs grey). Heterogeneity decomposition. Sensitivity with/without grey data. Discordance is the GAP proof of concept.</div>
+    </div>
+  </div>
+</section>
+
+<!-- THREE RUNS -->
+<section id="runs">
+  <div class="slabel">Research Programme</div>
+  <h2>Three Runs. One Signal.</h2>
+  <div class="runs">
+    <div class="rcard r1">
+      <div class="rlabel">Run 01 · Validation</div>
+      <div class="rtitle">CKD<br>Pure</div>
+      <div class="rdesc">Standalone systematic review of chronic kidney disease in Uganda. Validates the engine independently. Establishes pooled prevalence baseline. Identifies data gaps as "loss in measurement" zones across districts.</div>
+      <span class="rbadge">Methods paper</span>
+    </div>
+    <div class="rcard r2">
+      <div class="rlabel">Run 02 · Validation</div>
+      <div class="rtitle">HIV<br>Pure</div>
+      <div class="rdesc">Standalone systematic review of HIV burden and trajectory in Uganda. Second independent engine validation. APOL1, HIVAN, and ART-survivor long-term burden characterised. TDF nephrotoxicity pooled.</div>
+      <span class="rbadge">Methods paper</span>
+    </div>
+    <div class="rcard r3">
+      <div class="rlabel">Run 03 · The Money Run</div>
+      <div class="rtitle">CKD × HIV<br>Composite</div>
+      <div class="rdesc">Composite meta-analysis. Additive, synergistic, or geographically clustered intersection? Grey data divergence from published literature surfaces here. The signal lives in this run. Flagship submission.</div>
+      <span class="rbadge">Lancet Global Health · Nature Medicine</span>
+    </div>
+  </div>
+</section>
+
+<!-- GAP -->
+<section class="alt" id="gap">
+  <div class="gap-inner">
+    <div>
+      <div class="slabel">Core Innovation</div>
+      <h2 style="margin-bottom:24px;">Grey-Aware Policy (GAP)</h2>
+      <p class="gap-desc">Standard PRISMA pipelines discard grey literature or relegate it to a supplement. GAP treats MoH reports, NPA briefs, and district surveillance data as <strong style="color:var(--text)">first-class evidence</strong> alongside peer-reviewed sources.</p>
+      <p class="gap-desc">The methodological contribution is not "we used AI for a systematic review." It is a named, reproducible pipeline that changes what counts as evidence — and therefore changes what a funder, planner, or clinician can act on.</p>
+      <div class="gap-quote">If excluding grey data materially shifts the pooled estimate, you have just demonstrated why GAP matters. That discordance is the methodology paper.</div>
+      <p class="gap-desc">High-throughput means the factory is the product. The CKD and HIV reviews are proof-of-concept runs. The engine scales to every major disease category in Uganda's 20-year NPA roadmap.</p>
+    </div>
+    <div class="flow">
+      <div class="fnode">
+        <div class="fnode-lbl">Source A — Peer-Reviewed</div>
+        <div class="fnode-txt">PubMed · medRxiv · Cochrane · WHO IRIS</div>
+      </div>
+      <div class="fconn"></div>
+      <div class="fnode">
+        <div class="fnode-lbl">Source B — Grey Data (GAP Innovation)</div>
+        <div class="fnode-txt">MoH Uganda · NPA briefs · District surveillance · Policy documents</div>
+      </div>
+      <div class="fconn"></div>
+      <div class="fnode">
+        <div class="fnode-lbl">RAG Extraction + HITL Validation</div>
+        <div class="fnode-txt">AI extracts clinical parameters → UCU/JHU humans verify → structured dataset</div>
+      </div>
+      <div class="fconn"></div>
+      <div class="fnode">
+        <div class="fnode-lbl">Meta-Analysis</div>
+        <div class="fnode-txt">Pooled estimate · Subgroup by source · Sensitivity ±grey data</div>
+      </div>
+      <div class="fconn"></div>
+      <div class="fnode out">
+        <div class="fnode-lbl">Output — GAP Signal</div>
+        <div class="fnode-txt">Discordance between peer-reviewed and grey evidence = the finding that justifies everything upstream</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SIGNAL -->
+<section id="signal">
+  <div class="slabel">What We're Hunting</div>
+  <h2>The Signal Space</h2>
+  <div class="sgrid">
+    <div class="scard">
+      <span class="sicon">🗺️</span>
+      <div class="stitle">Geographic Clustering</div>
+      <div class="sdesc">CKD burden distributed independently of HIV prevalence maps — suggesting autonomous drivers (hypertension, diabetes, APOL1) invisible in journals but present in district grey data.</div>
+    </div>
+    <div class="scard">
+      <span class="sicon">⏱️</span>
+      <div class="stitle">Temporal Signal</div>
+      <div class="sdesc">CKD burden rising after ART success. The HIVAN story hiding in plain sight — long-term renal consequence of HIV survival, visible only across time-series in MoH surveillance.</div>
+    </div>
+    <div class="scard">
+      <span class="sicon">📊</span>
+      <div class="stitle">Grey–Published Divergence</div>
+      <div class="sdesc">Where MoH and NPA numbers tell a materially different story than journals. The GAP methodology's killer demonstration: pooled estimate shifts when grey data is included or excluded.</div>
+    </div>
+    <div class="scard">
+      <span class="sicon">🧬</span>
+      <div class="stitle">APOL1 × HIV Interaction</div>
+      <div class="sdesc">CKD in sub-Saharan Africa has a unique genetic-infectious profile. The composite run tests whether the CKD × HIV intersection is additive, synergistic, or clustered — not yet characterised for Uganda.</div>
+    </div>
+    <div class="scard">
+      <span class="sicon">💊</span>
+      <div class="stitle">TDF Nephrotoxicity Burden</div>
+      <div class="sdesc">Recent SSA meta-analyses (2025) show high pooled CKD prevalence in PLWHIV on TDF regimens. Uganda-specific disaggregation remains a gap. The HIV pure run resolves this.</div>
+    </div>
+    <div class="scard">
+      <span class="sicon">🏥</span>
+      <div class="stitle">Infrastructure Mismatch</div>
+      <div class="sdesc">Where CKD/ESRD burden is highest vs where dialysis and transplant infrastructure currently sits. NPA-05 heat map makes this visible. Composite run quantifies the gap for national planning.</div>
+    </div>
+  </div>
+</section>
+
+<!-- QUOTE -->
+<div class="qblock">
+  <div class="qtext">"One systematic review isn't the product — the engine is the product. The CKD review is the proof-of-concept run. The factory scales to every major disease category in Uganda's 20-year roadmap."</div>
+  <div class="qsrc">Ukubona · GAP Vision · UGOAX Roundtable</div>
+</div>
+
+<!-- GRANTS -->
+<section class="alt" id="grants">
+  <div class="slabel">Funding Landscape</div>
+  <h2>Grant Targeting Brief</h2>
+  <table class="gtable">
+    <thead>
+      <tr>
+        <th>Priority</th>
+        <th>Grant</th>
+        <th>Funder</th>
+        <th>Amount</th>
+        <th>Deadline</th>
+        <th>Fit for GAP</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="pbadge p1">#1 Anchor</span></td>
+        <td class="gname">ESIC — Evidence Synthesis Infrastructure Hubs</td>
+        <td>Wellcome Trust</td>
+        <td>£1.5–1.9M</td>
+        <td class="dl urg">07 May 2026</td>
+        <td>AI living evidence synthesis, LMIC-led infrastructure. Structural perfect fit. Existing prototypes become proof-of-concept, not promises.</td>
+      </tr>
+      <tr>
+        <td><span class="pbadge p2">#2 Sprint</span></td>
+        <td class="gname">EVAH — Evidence for AI in Health</td>
+        <td>Wellcome + Gates + Novo Nordisk</td>
+        <td>$1–3M</td>
+        <td class="dl urg">01 Apr 2026</td>
+        <td>Locally-led AI tool evaluation. Frame RAG pipeline as policy/clinical decision support layer for MoH. Very tight deadline.</td>
+      </tr>
+      <tr>
+        <td><span class="pbadge p3">#3 Pilot</span></td>
+        <td class="gname">NIH R21 — NIAID Pathway</td>
+        <td>NIH / NIAID</td>
+        <td>~$275K</td>
+        <td class="dl">May 2026 cycle</td>
+        <td>HIV-CKD syndemic pilot. APOL1 + HIVAN framing is scientifically legitimate, not a hack. Monthly deadlines via NIAID special status.</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="gnote">
+    <div class="gnote-lbl">Strategic Note</div>
+    <p class="gnote-txt">ESIC was literally designed for what you are building. Reframes ambition from "too big for R21" to "exactly right for ESIC." UCU ethics committee initiation is the immediate critical path item — not optional bureaucracy, but what separates a cool pipeline from publishable, policy-citable findings. JHU IRB and UNCST clearance pathways must begin in parallel.</p>
+  </div>
+  <div style="margin-top:16px; padding:18px 22px; border:1px solid var(--border); border-left:3px solid var(--accent3);">
+    <div style="font-family:'IBM Plex Mono',monospace; font-size:.62rem; letter-spacing:.15em; text-transform:uppercase; color:var(--accent3);">Tuesday Agenda Recommendation</div>
+    <p style="margin-top:7px; font-size:.83rem; color:var(--text-dim);">Present the GAP vision architecture first — three-run pipeline, GAP methodology, UGOAX scope for operational details — and let the team align on that before selecting a grant vehicle. ESIC, NIAID R21, and EVAH each pull the framing in different directions. Alignment first, vehicle second.</p>
+  </div>
+</section>
+
+<!-- AI CONSORTIUM -->
+<section id="ai">
+  <div class="slabel">Multi-Model Intelligence</div>
+  <h2>AI Consortium Input</h2>
+  <div class="aigrid">
+    <div class="aicard g">
+      <div class="ainame">Google</div>
+      <div class="aicontrib">Identified three-layer stack coherence: NPA-05 (Landscape) → RAG engine (Evidence) → UCU dashboards (UI/UX). First to articulate HIV/NIAID scientific legitimacy via APOL1 + HIVAN. Coined pentadic alignment concept. Suggested student HITL as NIH reviewer asset.</div>
+      <div class="aiinsight">"You're building the frontend for a very complex public health backend."</div>
+    </div>
+    <div class="aicard o">
+      <div class="ainame">OpenAI</div>
+      <div class="aicontrib">Sharpest critique: platform looking for a grant vs scientific problem solved by a platform. Pushed for testable hypothesis. Produced submission-grade NIH R21 Specific Aims. Key upgrade: "AI-assisted systematic review" → "continuously updating evidence system."</div>
+      <div class="aiinsight">"Engineering is stronger than the hypothesis — NIH funds science first, tools second."</div>
+    </div>
+    <div class="aicard a">
+      <div class="ainame">Anthropic</div>
+      <div class="aicontrib">Named GAP (Grey-Aware Policy) as the real methodological contribution. Surfaced ESIC alignment as most important development in the document. Called out IRB/ethics timeline gap honestly. Held the big picture when operational details were not ready for discussion.</div>
+      <div class="aiinsight">"GAP is a legitimate methodological innovation — name it and own it."</div>
+    </div>
+    <div class="aicard x">
+      <div class="ainame">xAI · Grok</div>
+      <div class="aicontrib">Live intelligence layer: surfaced ESIC and EVAH with exact March 2026 deadlines and funding amounts. Confirmed otto-SR state-of-art (93–97% human agreement). Real-time Uganda CKD-HIV signal confirmation. NIAID May 7 deadline urgency. "Ears to the ground" as operating system.</div>
+      <div class="aiinsight">"The factory is ready. Let's flip the switch."</div>
+    </div>
+  </div>
+</section>
+
+<!-- PENTAD -->
+<section class="alt" id="pentad">
+  <div class="slabel">Institutional Architecture</div>
+  <h2>The Pentad</h2>
+  <p style="color:var(--text-dim);font-size:.88rem;max-width:580px;margin-bottom:40px;">Five institutional actors whose alignment moves this from a research project to national infrastructure. Not decoration — the implementation pathway.</p>
+  <div class="pentad">
+    <div class="pnode">
+      <div class="pnode-lbl">University</div>
+      <div class="pnode-name">UCU</div>
+      <div class="pnode-role">HITL validation · Ethics · Students</div>
+    </div>
+    <div class="pnode">
+      <div class="pnode-lbl">Government</div>
+      <div class="pnode-name">NPA</div>
+      <div class="pnode-role">20-year roadmap · Policy output</div>
+    </div>
+    <div class="pnode center">
+      <div class="pnode-lbl">Engine</div>
+      <div class="pnode-name">Ukubona · GAP</div>
+      <div class="pnode-role">Pipeline · Architecture · Vision</div>
+    </div>
+    <div class="pnode">
+      <div class="pnode-lbl">Government</div>
+      <div class="pnode-name">MoH Uganda</div>
+      <div class="pnode-role">Grey data · Implementation</div>
+    </div>
+    <div class="pnode">
+      <div class="pnode-lbl">Research Institution</div>
+      <div class="pnode-name">JHU</div>
+      <div class="pnode-role">International credibility · Subaward</div>
+    </div>
+  </div>
+  <div class="pentad-note">
+    <span style="font-family:'IBM Plex Mono',monospace;font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;color:var(--accent3)">Why it matters to funders</span>
+    <p style="margin-top:7px;font-size:.82rem;color:var(--text-dim)">This is a structurally sound pentad that makes the project look <em>inevitable</em> rather than experimental. Outputs directly inform planning tools used by the National Planning Authority. That's not publishing a paper — that's changing how a country plans health. Note: since May 2025, NIH has stricter Foreign Subaward rules — frame UCU/Uganda components as Consultant/Contractual if needed for standard R21.</p>
+  </div>
+</section>
+
+<!-- STEPS -->
+<section id="steps">
+  <div class="slabel">Agreed Actions</div>
+  <h2>Next Steps</h2>
+  <div class="slist">
+    <div class="sitem">
+      <div class="smeta"><span class="swho wu">Ukubona</span></div>
+      <div class="stext"><strong>Update shared project document</strong> with specific grant mechanisms (ESIC, EVAH, NIH R21), direct links to NIH/Wellcome calls, ordered by priority, with deadlines. Deliver Monday or Tuesday before the 4pm meeting.</div>
+    </div>
+    <div class="sitem">
+      <div class="smeta"><span class="swho wu">Ukubona</span></div>
+      <div class="stext"><strong>Explore automated systems</strong> to produce a preliminary systematic review paper using AI tools. GAP pipeline proof-of-concept: CKD Run 01 as first factory output.</div>
+    </div>
+    <div class="sitem">
+      <div class="smeta"><span class="swho wu">Ukubona</span></div>
+      <div class="stext"><strong>Share rough notes and transcripts</strong> from this meeting with the full group via WhatsApp/email.</div>
+    </div>
+    <div class="sitem">
+      <div class="smeta"><span class="swho wu">Ukubona</span></div>
+      <div class="stext"><strong>Initiate UCU ethics committee relationship.</strong> Critical path item — prerequisite for publishable, policy-citable findings. Begin JHU IRB and UNCST clearance pathway in parallel.</div>
+    </div>
+    <div class="sitem">
+      <div class="smeta"><span class="swho wr">Robert</span></div>
+      <div class="stext"><strong>Send email contacts of partners</strong> (including Boniface) to Ukubona.</div>
+    </div>
+    <div class="sitem">
+      <div class="smeta"><span class="swho wa">All</span></div>
+      <div class="stext"><strong>Review updated document</strong> once shared. Prepare for focused discussion on selected grant(s). Continue communication via WhatsApp/email before Tuesday.</div>
+    </div>
+    <div class="sitem">
+      <div class="smeta"><span class="swho wa">All</span></div>
+      <div class="stext"><strong>Attend next meeting: Tuesday 7th, 4pm.</strong> Present GAP vision architecture (methodology + three-run programme + UGOAX scope) first, then align on grant vehicle. ESIC is the anchor recommendation.</div>
+    </div>
+  </div>
+</section>
+
+<!-- LIVE ASSETS -->
+<section class="alt" id="assets">
+  <div class="slabel">Live Assets</div>
+  <h2 style="margin-bottom:32px;">Deployed Prototypes</h2>
+  <div class="llinks">
+    <a class="llink" href="https://ukubona-llc.github.io/npa-05/" target="_blank">
+      <div>
+        <div class="llabel">NPA-05</div>
+        <div class="ltitle">Uganda Disease Landscape · Heat Map</div>
+        <div class="lsub">Policy layer · Loss in measurement · NPA 20-year roadmap · Your killer slide</div>
+      </div>
+      <span class="larrow">→</span>
+    </a>
+    <a class="llink" href="https://ukb-dt.github.io/repos-01/assets/html/ucu-ckd3.html" target="_blank">
+      <div>
+        <div class="llabel">UCU-CKD3</div>
+        <div class="ltitle">CKD Dashboard · Run 01 Prototype</div>
+        <div class="lsub">Clinical UI layer · Interactive evidence · eGFR trajectories · Add explicit clinical variables</div>
+      </div>
+      <span class="larrow">→</span>
+    </a>
+    <a class="llink" href="https://ukb-dt.github.io/repos-01/assets/html/ucu-renal.html" target="_blank">
+      <div>
+        <div class="llabel">UCU-Renal</div>
+        <div class="ltitle">Renal Dashboard · Composite Prototype</div>
+        <div class="lsub">Clinical UI layer · Renal disease landscape · ESRD mapping · Bridge to Run 03</div>
+      </div>
+      <span class="larrow">→</span>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div>
+    <div class="flogo">Ukubona</div>
+    <div class="fnote">GAP Research Programme · Uganda · March 2026<br>Operational details: UGOAX Roundtable</div>
+  </div>
+  <div class="fright">
+    <a href="https://wellcome.org/research-funding/schemes/establishing-infrastructure-hubs-power-evidence-synthesis" target="_blank">ESIC Application (07 May 2026) →</a>
+    <a href="https://www.povertyactionlab.org/initiative/evidence-ai-health-evah-rfp" target="_blank">EVAH RFP (01 Apr 2026) →</a>
+    <div style="font-size:.7rem;color:var(--text-muted);margin-top:10px;text-align:right">Next meeting: Tuesday 7th · 4pm</div>
+  </div>
+</footer>
+
+</body>
+</html>
